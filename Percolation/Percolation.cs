@@ -27,8 +27,8 @@ namespace Percolation
 
         public bool IsOpen(int i, int j)
         {
-            if (_open[i,j])
-            { 
+            if (_open[i, j])
+            {
                 return true;
             }
             return false;
@@ -36,7 +36,7 @@ namespace Percolation
 
         public bool IsFull(int i, int j)
         {
-            if (_full[i,j])
+            if (_full[i, j])
             {
                 return true;
             }
@@ -47,7 +47,7 @@ namespace Percolation
         {
             for (int i = 0; i < _size; i++)
             {
-                if (_full[i,_size])
+                if (_full[i, _size])
                 {
                     return true;
                 }
@@ -60,31 +60,54 @@ namespace Percolation
             List<KeyValuePair<int, int>> neighbor = new List<KeyValuePair<int, int>>();
             if (i > 0) neighbor.Add(new KeyValuePair<int, int>(i - 1, j));
             if (j > 0) neighbor.Add(new KeyValuePair<int, int>(i, j - 1));
-            if (i < _size -1) neighbor.Add(new KeyValuePair<int, int>(i + 1, j));
+            if (i < _size - 1) neighbor.Add(new KeyValuePair<int, int>(i + 1, j));
             if (j < _size - 1) neighbor.Add(new KeyValuePair<int, int>(i, j + 1));
-            
-                return neighbor ;
-            }   
+
+            return neighbor;
+        }
 
         public void Open(int i, int j)
         {
             if (!IsOpen(i, j))
             {
                 _open[i, j] = true;
-
-                if (IsFull(i,j) != true )
+                //SI 1ère ligne
+                if (i == 0)
                 {
+                    //ALORS remplir case
                     _full[i, j] = true;
-
-                    foreach (var neighbor in CloseNeighbors(i,j))
+                    OpenNeighboors(i, j);
+                }
+                //SINON
+                else
+                {
+                    //POUR chaque voisin
+                    foreach (var neighbor in CloseNeighbors(i, j))
                     {
-                        if (IsOpen(neighbor.Key, neighbor.Value))
+                        //SI voisin est plein
+                        if (IsFull(neighbor.Key, neighbor.Value))
                         {
-                            _full[neighbor.Key,neighbor.Value] = true;
+                            //ALORS remplir case
+                            _full[i, j] = true;
+                            OpenNeighboors(i, j);
                         }
-                    }                    
+                    }
+                }
+            }
+        }
+
+        private void OpenNeighboors(int i, int j)
+        {
+            foreach (var neighbor in CloseNeighbors(i, j))
+            {
+                if (IsOpen(neighbor.Key, neighbor.Value))
+                {
+                    _full[neighbor.Key, neighbor.Value] = true;
+                    OpenNeighboors(neighbor.Key, neighbor.Value);
                 }
             }
         }
     }
 }
+
+

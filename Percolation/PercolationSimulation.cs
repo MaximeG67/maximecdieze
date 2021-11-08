@@ -31,6 +31,13 @@ namespace Percolation
 
         public double PercolationValue(int size)
         {
+            // Initialiser une grille de taille N *N avec l'ensemble des cases bloquées.
+            
+// Choisir aléatoirement une case bloquée et l'ouvrir.
+// Tester si la percolation se produit.
+// Réaliser la deuxième et troisième étape jusqu'à ce que la percolation est lieue.
+// Retourner la valeur cases ouvertes / nombre total de cases.
+
             return 0;
         }
     }

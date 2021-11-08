@@ -27,27 +27,64 @@ namespace Percolation
 
         public bool IsOpen(int i, int j)
         {
+            if (_open[i,j])
+            { 
+                return true;
+            }
             return false;
         }
 
         public bool IsFull(int i, int j)
         {
+            if (_full[i,j])
+            {
+                return true;
+            }
             return false;
         }
 
         public bool Percolate()
         {
+            for (int i = 0; i < _size; i++)
+            {
+                if (_full[i,_size])
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
         private List<KeyValuePair<int, int>> CloseNeighbors(int i, int j)
         {
-            return null;
-        }
+            List<KeyValuePair<int, int>> neighbor = new List<KeyValuePair<int, int>>();
+            if (i > 0) neighbor.Add(new KeyValuePair<int, int>(i - 1, j));
+            if (j > 0) neighbor.Add(new KeyValuePair<int, int>(i, j - 1));
+            if (i < _size -1) neighbor.Add(new KeyValuePair<int, int>(i + 1, j));
+            if (j < _size - 1) neighbor.Add(new KeyValuePair<int, int>(i, j + 1));
+            
+                return neighbor ;
+            }   
 
         public void Open(int i, int j)
         {
+            if (!IsOpen(i, j))
+            {
+                _open[i, j] = true;
 
+                if (IsFull(i,j) != true )
+                {
+                    _full[i, j] = true;
+
+                    foreach (var neighbor in CloseNeighbors(i,j))
+                    {
+                        if (IsOpen(neighbor.Key, neighbor.Value))
+                        {
+                            _full[neighbor.Key,neighbor.Value] = true;
+                        }
+                    }                    
+                }
+            }
         }
     }
 }

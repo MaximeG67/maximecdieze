@@ -10,8 +10,8 @@ namespace Percolation
     {
         static void Main(string[] args)
         {
-
-
+            PercolationSimulation pS = new PercolationSimulation();
+            pS.PercolationValue(10);
             // Keep the console window open
             Console.WriteLine("----------------------");
             Console.WriteLine("Press any key to exit.");

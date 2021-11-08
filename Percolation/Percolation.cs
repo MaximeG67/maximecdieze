@@ -47,7 +47,7 @@ namespace Percolation
         {
             for (int i = 0; i < _size; i++)
             {
-                if (_full[i, _size])
+                if (_full[i, _size-1])
                 {
                     return true;
                 }
@@ -91,7 +91,8 @@ namespace Percolation
                             _full[i, j] = true;
                             OpenNeighboors(i, j);
                         }
-                    }
+
+                    }       
                 }
             }
         }

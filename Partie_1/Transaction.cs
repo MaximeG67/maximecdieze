@@ -21,26 +21,6 @@ namespace Partie_1
             NumExp = numexp;
             NumDes = numdes;
         }
-        //public void ReadTrsc(string trxnPath, string sttsPath)
-        //{
-        //    var transactions = new Dictionary<string, List<int>>();
-        //    string[] lines = File.ReadAllLines(trxnPath);
-        //    foreach (string line in lines)
-        //    {
-        //        Console.WriteLine($"Fichier : {line}");
-        //        string[] split = line.Split(';');
-        //        for (int i = 0; i < split.Length; i++)
-        //        {
-        //            Console.Write($" Infos : {split[i]}");
-        //        }
-        //        string transaction = split[1];
-
-        //        if (!transactions.ContainsKey(transaction))
-        //        {
-        //            transactions.Add(transaction, new List<int>());
-        //        }
-        //    }
-            //File.WriteAllLines(sttsPath, Transaction);
         }
     }
-}
+

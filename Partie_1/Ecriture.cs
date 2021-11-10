@@ -44,9 +44,9 @@ namespace Partie_1
             {
                 Console.WriteLine($"Fichier : {line}");
                 string[] split = line.Split(';');
-                for (int i = 0; i < split.Length; i++)
+                for (int i = 0; i < split.Length - 1; i++)
                 {
-                    Console.WriteLine($" Infos Split T : {split[i]}");
+                    Console.WriteLine($" Infos : {split[i]}");
                     int.TryParse(split[0], out convers);
                     t.Numero = convers;
                     t.Montant = System.Convert.ToDecimal(split[1]);
@@ -62,4 +62,4 @@ namespace Partie_1
 
     }
 }
-}
+

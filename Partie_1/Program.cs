@@ -13,9 +13,12 @@ namespace Partie_1
         static void Main(string[] args)
         {
             string path = Directory.GetCurrentDirectory();
-            string accPath = path + @"\Comptes_1.txt";
-            string trxnPath = path + @"\Transactions_1.txt";
-            string sttsPath = path + @"\Statut_1.txt";
+            string input = path + @"\Comptes_1.txt";
+            string input1 = path + @"\Transactions_1.txt";
+            string output = path + @"\Statut_1.txt";
+
+            Ecriture.WriteFic(input,input1, output);
+
             // Keep the console window open
             Console.WriteLine("----------------------");
             Console.WriteLine("Press any key to exit.");

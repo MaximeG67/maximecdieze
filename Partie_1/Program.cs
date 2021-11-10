@@ -13,11 +13,12 @@ namespace Partie_1
         static void Main(string[] args)
         {
             string path = Directory.GetCurrentDirectory();
-            string input = path + @"\Comptes_1.txt";
-            string input1 = path + @"\Transactions_1.txt";
-            string output = path + @"\Statut_1.txt";
+            string acctPath = path + @"\Comptes_1.txt";
+            string trxnPath = path + @"\Transactions_1.txt";
+            string sttsPath = path + @"\Statut_1.txt";
 
-            Ecriture.WriteFic(input,input1, output);
+
+            List<Transaction> trans = Ecriture.ReadTrsc(acctPath);
 
             // Keep the console window open
             Console.WriteLine("----------------------");

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Projet_1;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -18,7 +19,17 @@ namespace Partie_1
             string sttsPath = path + @"\Statut_1.txt";
 
 
-            List<Transaction> trans = Ecriture.ReadTrsc(acctPath);
+            List<Compte> cpt = Ecriture.Readcpt(acctPath);
+            List<Transaction> trans = Ecriture.ReadTrsc(trxnPath);
+            List<Statut> stt = Ecriture.ManageTransaction(trans, cpt);
+            
+            using (StreamWriter sw = new StreamWriter(sttsPath))
+            {
+                foreach (var lambs in stt)
+                {
+                    sw.WriteLine($"{lambs.Numero};{lambs.Etat}");
+                }
+            }
 
             // Keep the console window open
             Console.WriteLine("----------------------");

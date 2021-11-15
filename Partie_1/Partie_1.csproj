@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Statut.cs" />
     <Compile Include="Ecriture.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Compte.cs" />

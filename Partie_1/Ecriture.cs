@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Projet_1;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,54 +13,128 @@ namespace Partie_1
         public static List<Compte> Readcpt(string accpPath)
         {
             List<Compte> comptes = new List<Compte>();
-            Compte c = new Compte(0, 0);
             int convers;
             string[] lines = File.ReadAllLines(accpPath);
 
             foreach (string line in lines)
             {
 
-                Console.WriteLine($"Fichier : {line}");
+                Compte c = new Compte(0, 0);
+                //Console.WriteLine($"Fichier : {line}");
                 string[] split = line.Split(';');
-                for (int i = 0; i < split.Length; i++)
+                //for (int i = 0; i < split.Length; i++)
+                //{
+                //    Console.WriteLine($" Infos Split C : {split[i]}");
+                //}
+                c.Numero = int.Parse(split[0]);
+                if (string.IsNullOrWhiteSpace(split[1]))
                 {
-                    Console.WriteLine($" Infos Split C : {split[i]}");
-                    int.TryParse(split[0], out convers);
-                    c.Numero = convers;
-                    c.Solde = System.Convert.ToDecimal(split[1]);
-                    comptes.Add(c);
+                    c.Solde = 0;
                 }
+                else
+                {
+                    c.Solde = decimal.Parse(split[1].Replace(".", ","));
+
+                }
+                comptes.Add(c);
             }
             return comptes;
         }
 
 
+
         public static List<Transaction> ReadTrsc(string trxnPath)
         {
             List<Transaction> transactions = new List<Transaction>();
-            Transaction t = new Transaction(0, 0, 0, 0);
-            int convers;            
-            string[] lines = File.ReadAllLines(trxnPath);           
+            int convers;
+            string[] lines = File.ReadAllLines(trxnPath);
             foreach (string line in lines)
             {
-                Console.WriteLine($"Fichier : {line}");
+                Transaction t = new Transaction(0, 0, 0, 0);
+                //Console.WriteLine($"Fichier : {line}");
                 string[] split = line.Split(';');
-                for (int i = 0; i < split.Length - 1; i++)
+
+                //for (int i = 0; i < split.Length; i++)
+                //{
+                //    Console.WriteLine($" Infos split T : {split[i]}");
+                //}
+                t.Numero = int.Parse(split[0]);
+                if (string.IsNullOrWhiteSpace(split[1]))
                 {
-                    Console.WriteLine($" Infos : {split[i]}");
-                    int.TryParse(split[0], out convers);
-                    t.Numero = convers;
-                    t.Montant = System.Convert.ToDecimal(split[1]);
-                    int.TryParse(split[0], out convers);
-                    t.NumExp = convers;
-                    int.TryParse(split[0], out convers);
-                    t.NumDes = convers;
-                    transactions.Add(t);
+                    t.Montant = 0;
                 }
+                else
+                {
+                    t.Montant = decimal.Parse(split[1].Replace(".", ","));
+                }
+                t.NumExp = int.Parse(split[2]);
+                t.NumDes = int.Parse(split[3]);
+                transactions.Add(t);
             }
+
             return transactions;
         }
-
+        public static List<Statut> ManageTransaction(List<Transaction> transactions, List<Compte> comptes)
+        {
+            List<Statut> statuts = new List<Statut>();
+            foreach (var transac in transactions)
+            {
+                Statut statut = new Statut(transac.Numero, "KO");
+                Compte compteExpediteur;
+                Compte compteDestinataire;
+                // DEPOT
+                if (transac.NumExp == 0 && transac.NumDes != 0)
+                {
+                    compteDestinataire = comptes.Find(cpt => cpt.Numero == transac.NumDes);
+                    if (compteDestinataire != null)
+                    {
+                        if (transac.Montant >= 0)
+                        {
+                            compteDestinataire.Solde += transac.Montant;
+                            statut.Etat = "OK";
+                        }
+                    }
+                }
+                // RETRAIT
+                else if (transac.NumDes == 0 && transac.NumExp != 0)
+                {
+                    compteExpediteur = comptes.Find(cpt => cpt.Numero == transac.NumExp);
+                    if (compteExpediteur != null)
+                    {
+                        if (transac.Montant >= 0)
+                        {
+                            if (compteExpediteur.Solde >= transac.Montant)
+                            {
+                                compteExpediteur.Solde += transac.Montant;
+                                statut.Etat = "OK";
+                            }
+                        }
+                    }
+                }
+                //VIREMENT
+                else if (transac.NumExp != 0 && transac.NumDes != 0)
+                {
+                    compteExpediteur = comptes.Find(cpt => cpt.Numero == transac.NumExp);
+                    compteDestinataire = comptes.Find(cpt => cpt.Numero == transac.NumDes);
+                    if (compteDestinataire != null && compteExpediteur != null)
+                    {
+                        if (transac.Montant >= 0)
+                        {
+                            if (compteExpediteur.Solde >= transac.Montant)
+                            {
+                            compteExpediteur.Solde -= transac.Montant;
+                            compteDestinataire.Solde += transac.Montant;
+                            statut.Etat = "OK";
+                            }
+                        }
+                    }
+                }
+                statuts.Add(statut);
+            }
+            return statuts;
+        }
     }
 }
+
+
 

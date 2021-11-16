@@ -18,24 +18,23 @@ namespace Partie_1
 
             foreach (string line in lines)
             {
-
                 Compte c = new Compte(0, 0);
-                //Console.WriteLine($"Fichier : {line}");
                 string[] split = line.Split(';');
-                //for (int i = 0; i < split.Length; i++)
-                //{
-                //    Console.WriteLine($" Infos Split C : {split[i]}");
-                //}
                 c.Numero = int.Parse(split[0]);
-                if (string.IsNullOrWhiteSpace(split[1]))
+                if (c.Solde < 0)
+                {
+                    Console.WriteLine("Le solde du compte est négatif, création impossible");
+                }
+                else if (string.IsNullOrWhiteSpace(split[1]))
                 {
                     c.Solde = 0;
                 }
-                else
+                else  
                 {
                     c.Solde = decimal.Parse(split[1].Replace(".", ","));
 
                 }
+                
                 comptes.Add(c);
             }
             return comptes;
@@ -51,13 +50,7 @@ namespace Partie_1
             foreach (string line in lines)
             {
                 Transaction t = new Transaction(0, 0, 0, 0);
-                //Console.WriteLine($"Fichier : {line}");
                 string[] split = line.Split(';');
-
-                //for (int i = 0; i < split.Length; i++)
-                //{
-                //    Console.WriteLine($" Infos split T : {split[i]}");
-                //}
                 t.Numero = int.Parse(split[0]);
                 if (string.IsNullOrWhiteSpace(split[1]))
                 {
@@ -88,7 +81,7 @@ namespace Partie_1
                     compteDestinataire = comptes.Find(cpt => cpt.Numero == transac.NumDes);
                     if (compteDestinataire != null)
                     {
-                        if (transac.Montant >= 0)
+                        if (transac.Montant > 0)
                         {
                             compteDestinataire.Solde += transac.Montant;
                             statut.Etat = "OK";
@@ -118,7 +111,7 @@ namespace Partie_1
                     compteDestinataire = comptes.Find(cpt => cpt.Numero == transac.NumDes);
                     if (compteDestinataire != null && compteExpediteur != null)
                     {
-                        if (transac.Montant >= 0)
+                        if (transac.Montant > 0)
                         {
                             if (compteExpediteur.Solde >= transac.Montant)
                             {

@@ -74,75 +74,78 @@ namespace Partie_1
         }
         public static List<Statut> ManageTransaction(List<Transaction> transactions, List<Compte> comptes)
         {
-            int i = 0;
-            int e = 0;
             List<Statut> statuts = new List<Statut>();
             //List<int> trnsNbr = new List<int>();
             foreach (var transac in transactions)
             {
                 Statut statut = new Statut(transac.Numero, "KO");
-                Compte compteExpediteur;
-                Compte compteDestinataire;
                 if (!statuts.Any(stt => stt.Numero == transac.Numero))
                 {
-                    // DEPOT
-                    if (transac.NumExp == 0 && transac.NumDes != 0)
+                    if (GererTransaction(comptes, transac))
                     {
-                        compteDestinataire = comptes.Find(cpt => cpt.Numero == transac.NumDes);
-                        if (compteDestinataire != null)
-                        {
-                            if (transac.Montant > 0)
-                            {
-                                compteDestinataire.Solde += transac.Montant;
-                                statut.Etat = "OK";
-                                i++;
-                            }
-                        }
+                        statut.Etat = "OK";
                     }
-                    // RETRAIT
-                    else if (transac.NumDes == 0 && transac.NumExp != 0)
-                    {
-                        compteExpediteur = comptes.Find(cpt => cpt.Numero == transac.NumExp);
-                        if (compteExpediteur != null)
-                        {
-                            if (transac.Montant >= 0)
-                            {
-                                if (compteExpediteur.Solde >= transac.Montant)
-                                {
-                                    compteExpediteur.Solde += transac.Montant;
-                                    statut.Etat = "OK";
-                                    i++;
-                                }
-                            }
-                        }
-                    }
-                    //VIREMENT
-                    else if (transac.NumExp != 0 && transac.NumDes != 0)
-                    {
-                        compteExpediteur = comptes.Find(cpt => cpt.Numero == transac.NumExp);
-                        compteDestinataire = comptes.Find(cpt => cpt.Numero == transac.NumDes);
-                        if (compteDestinataire != null && compteExpediteur != null)
-                        {
-                            if (transac.Montant > 0)
-                            {
-                                if (compteExpediteur.Solde >= transac.Montant)
-                                {
-                                    compteExpediteur.Solde -= transac.Montant;
-                                    compteDestinataire.Solde += transac.Montant;
-                                    statut.Etat = "OK";
-                                    i++;
-                                }
-                            }
-                        }
-                    }
-                } e++;
+                }
                 //trnsNbr.Add(transac.Numero);
                 statuts.Add(statut);
             }
-            Console.WriteLine($"Nombre de comptes ajoutés avec succès : {i}");
-            Console.WriteLine($"Nombre de comptes non ajoutés         : {e-i}");
             return statuts;
 
+        }
+
+        private static bool GererTransaction(List<Compte> comptes, Transaction transac)
+        {
+            Compte compteExpediteur;
+            Compte compteDestinataire;
+            // DEPOT
+            if (transac.NumExp == 0 && transac.NumDes != 0)
+            {
+                compteDestinataire = comptes.Find(cpt => cpt.Numero == transac.NumDes);
+                if (compteDestinataire != null)
+                {
+                    if (transac.Montant > 0)
+                    {
+                        compteDestinataire.Solde += transac.Montant;
+                        return true;
+                    }
+                }
+            }
+            // RETRAIT
+            else if (transac.NumDes == 0 && transac.NumExp != 0)
+            {
+                compteExpediteur = comptes.Find(cpt => cpt.Numero == transac.NumExp);
+                if (compteExpediteur != null)
+                {
+                    if (transac.Montant >= 0)
+                    {
+                        if (compteExpediteur.Solde >= transac.Montant)
+                        {
+                            compteExpediteur.Solde += transac.Montant;
+                            return true;
+                        }
+                    }
+                }
+            }
+            //VIREMENT
+            else if (transac.NumExp != 0 && transac.NumDes != 0)
+            {
+                compteExpediteur = comptes.Find(cpt => cpt.Numero == transac.NumExp);
+                compteDestinataire = comptes.Find(cpt => cpt.Numero == transac.NumDes);
+                if (compteDestinataire != null && compteExpediteur != null)
+                {
+                    if (transac.Montant > 0)
+                    {
+                        if (compteExpediteur.Solde >= transac.Montant)
+                        {
+                            compteExpediteur.Solde -= transac.Montant;
+                            compteDestinataire.Solde += transac.Montant;
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

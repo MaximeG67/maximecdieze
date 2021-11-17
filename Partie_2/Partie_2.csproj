@@ -43,10 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Canva\Administrator.cs" />
-    <Compile Include="Canva\Account.cs" />
+    <Compile Include="AccountLine.cs" />
+    <Compile Include="Administrator.cs" />
+    <Compile Include="Account.cs" />
     <Compile Include="Global.cs" />
-    <Compile Include="Canva\Transaction.cs" />
+    <Compile Include="Transaction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

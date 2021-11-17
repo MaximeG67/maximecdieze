@@ -4,18 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Partie_2.Canva
+namespace Partie_2
 {
-    class Administrator
+    public class Administrator
     {
         public int Id { get; set; }
+        public const string TypePart = "Particulier";
+        public const string TypeEntr = "Entreprise";
         public string Sort { get; set; }
+        public int MaxTransac { get; set; }
         public List<Account> listAccount;
 
-        public Administrator(int id,string sort)
+        public Administrator(int id,string sort,int maxTransac)
         {
             Id = id;
             Sort = sort;
+            MaxTransac = maxTransac;
             listAccount = new List<Account>();
         }
 
@@ -36,6 +40,11 @@ namespace Partie_2.Canva
             {
                 return false;
             } return true;
+        }
+
+        internal static bool accountExist(int id, List<AccountLine> account)
+        {
+            throw new NotImplementedException();
         }
     }
 }

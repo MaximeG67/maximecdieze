@@ -13,38 +13,29 @@ namespace Partie_2
         public const string TypeEntr = "Entreprise";
         public string Sort { get; set; }
         public int MaxTransac { get; set; }
-        public List<Account> listAccount;
+        public List<Account> ListAccount;
 
-        public Administrator(int id,string sort,int maxTransac)
+        public Administrator(int id, string sort, int maxTransac)
         {
             Id = id;
             Sort = sort;
             MaxTransac = maxTransac;
-            listAccount = new List<Account>();
+            ListAccount = new List<Account>();
         }
 
         public void AddAcount(Account acnt)
         {
-            if (!listAccount.Contains(acnt))
-                listAccount.Add(acnt);
+            if (!ListAccount.Contains(acnt))
+                ListAccount.Add(acnt);
         }
 
-        public List<Account> getAllAccount()
+        public static bool AccountExist(int id, List<Account> listAccount)
         {
-            return listAccount;
-        }
-
-        public static bool accountExist(int id, List<Account> listAccount)
-        {
-            if (!listAccount.Any(x=> x.Id == id))
+            if (!listAccount.Any(x => x.Id == id))
             {
                 return false;
-            } return true;
-        }
-
-        internal static bool accountExist(int id, List<AccountLine> account)
-        {
-            throw new NotImplementedException();
+            }
+            return true;
         }
     }
 }

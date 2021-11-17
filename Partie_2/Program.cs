@@ -21,6 +21,7 @@ namespace Partie_2
 
             List<Administrator> administrators = Global.ReadAdmin(gestPath);
             List<AccountLine> accounts = Global.ReadAccount(acctPath);
+           
 
             // Keep the console window open
             Console.WriteLine("----------------------");

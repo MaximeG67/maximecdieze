@@ -22,7 +22,14 @@ namespace Partie_2
                 int exit;
 
                 string[] split = line.Split(';');
-                id = int.Parse(split[0]);
+                if (string.IsNullOrWhiteSpace(split[0]))
+                {
+                    id = 0;
+                }
+                else
+                {
+                    id = int.Parse(split[0]);
+                }
                 date = DateTime.Parse(split[1]);
                 if (string.IsNullOrWhiteSpace(split[3]))
                 {
@@ -51,13 +58,9 @@ namespace Partie_2
                     balance = decimal.Parse(split[2].Replace(".", ","));
                 }
 
-                if (id != 0 && !Administrator.accountExist(id, account) && balance > 0)
-                {
-
                     AccountLine c = new AccountLine(id, date, balance, enter, exit);
                     account.Add(c);
                     Console.WriteLine($"Compte numéro {id} ajouté avec succès ; Solde à {balance}");
-                }
             }
             return account;
         }
@@ -131,7 +134,7 @@ namespace Partie_2
                     {
                         break;
                     }
-                    Console.WriteLine($"Compte {trnsac[j].Id} et {trnsac[i].Id} ");
+                    Console.WriteLine($"Compte {trnsac[j].Id} et {acct[i].Id} ");
                     last = j + 1;
                 }
                 //Traiter ligne Compte

@@ -9,6 +9,11 @@ namespace Partie_2.Canva
 {
     public static class Global
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="accpPath"></param>
+        /// <returns></returns>
         public static List<Account> ReadAccount(string accpPath)
         {
             List<Account> account = new List<Account>();
